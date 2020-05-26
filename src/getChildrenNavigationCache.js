@@ -5,7 +5,8 @@ export default function getChildrenNavigationCache(navigation) {
 
   let childrenNavigationCache =
     navigation._childrenNavigation || (navigation._childrenNavigation = {});
-  let childKeys = navigation.state.routes.map(route => route.key);
+  const { routes, preloadRoutes } = navigation.state;
+  let childKeys = [...routes, ...(preloadRoutes || [])].map(route => route.key);
   Object.keys(childrenNavigationCache).forEach(cacheKey => {
     if (!childKeys.includes(cacheKey) && !navigation.state.isTransitioning) {
       delete childrenNavigationCache[cacheKey];
